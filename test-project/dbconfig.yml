@@ -1,0 +1,15 @@
+  - 
+   name: db_configure
+   hosts: web_servers
+   tasks:
+    
+    - name: Adds Python MySQL support on RedHat/CentOS
+      yum: name=MySQL-python state=present
+      when: ansible_os_family == 'RedHat'
+
+    - name: Sets the root password 
+      mysql_user: user=root password="Sith7Lord" host="localhost"
+
+    - name: Configure Database
+      mysql_db.py: name=database_test1 state=present
+

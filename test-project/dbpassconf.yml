@@ -1,0 +1,13 @@
+  -
+   name: db_configure
+   hosts: web_servers
+   tasks:
+    - name: Set root user password
+      mysql_user: name=root
+      host="localhost"
+      password="{{ mysql_root_password }}"
+      check_implicit_admin=yes
+      login_user="{{ mysql_user }}"
+      login_password="{{ mysql_old_root_password }}"
+      state=present
+

@@ -1,0 +1,25 @@
+-
+  name: lamp-uninstall
+  hosts: web_servers
+  tasks:
+
+   - name: uninstall httpd service
+     yum:
+      name: httpd
+      state: absent
+       
+   - name: uninstall mariadb
+     yum:
+      name: mariadb, mariadb-server, mariadb-libs
+      state: absent
+      
+   - name: uninstall php-fpm
+     yum: 
+      name: php-fpm
+      state: absent
+
+   - name: remove dir
+     command: rm -rf /var/lib/mysql
+
+   - name: remove file
+     command: rm -f /root/.my.cnf

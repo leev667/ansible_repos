@@ -1,0 +1,6 @@
+-
+  name: db_configure
+  hosts: web_servers
+  tasks:
+     - name: Configure Database
+       mysql_db: name=fleadb state=present    

@@ -1,0 +1,39 @@
+-
+  name: httpd-install
+  hosts: web_servers
+  tasks:
+   - name: Execute command 'date'
+     command: date
+
+   - name: Install httpd service
+     yum:
+      name: httpd
+      state: present
+         
+   - name: Start web server
+     service:
+      name: httpd
+      state: started
+      enabled: yes   
+       
+   - name: Install mysql server
+     yum:
+      name: mariadb, mariadb-server
+      state: present
+      
+   - name: Start mariadb server
+     service:
+      name: mariadb
+      state: started
+      enabled: yes
+
+   - name: Install php-fpm
+     yum: 
+      name: php-fpm
+      state: present
+
+   - name: Start php-fpm
+     service:
+      name: php-fpm
+      state: started
+      enabled: yes 

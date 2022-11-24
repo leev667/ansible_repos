@@ -1,0 +1,24 @@
+-
+  name: Virtualhost creator
+  hosts: web_servers
+  tasks:
+
+  - name: create doc root for virtual host
+    command: mkdir -p /var/www/vhosts/the-flea.co.uk
+  
+  - name: copying file with playbook
+    copy:
+      src: flea.co.uk.conf
+      dest: /etc/httpd/conf.d/
+      owner: apache
+      group: apache        
+      mode: 0644
+    
+  - name: Start web server
+    service: 
+      name: httpd 
+      state: started
+
+#   -name: copy file from local
+     
+

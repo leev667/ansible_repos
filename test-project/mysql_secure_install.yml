@@ -1,0 +1,26 @@
+-
+  name: msyql_secure_install
+  hosts: target2
+  tasks:
+     - name: Adds Python MySQL support on RedHat/CentOS
+       yum: name=MySQL-python state=present
+       when: ansible_os_family == 'RedHat'
+
+     - name: Deletes anonymous MySQL server user for ansible_fqdn
+       mysql_user: user="" host="ansibletarget2" state="absent"
+
+     - name: Deletes anonymous MySQL server user for ansible_fqdn
+       mysql_user: user="root" host="ansibletarget2" state="absent"
+          
+     - name: Secures the MySQL root user for IPV6 localhost (::1)
+       mysql_user: user="root" password="Sith7Lord" host="::1"
+       no_log: yes
+
+     - name: Secures the MySQL root user for IPV4 localhost (127.0.0.1)
+       mysql_user: user="root" password="Sith7Lord" host="127.0.0.1"
+       no_log: yes
+      
+     - name: Removes the MySQL test database
+       mysql_db: db=test state=absent
+
+      

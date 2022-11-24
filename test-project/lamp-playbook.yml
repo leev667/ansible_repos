@@ -1,0 +1,64 @@
+-
+  name: lamp-install
+  hosts: web_servers
+  tasks:
+
+   - name: Install httpd service
+     yum: name=httpd state=present
+         
+   - name: Start web server
+     service: name=httpd state=started enabled=yes   
+       
+   - name: Install mysql server
+     yum: name=mariadb,mariadb-server state=present
+      
+   - name: Start mariadb server
+     service: name=mariadb state=started enabled=yes
+
+   - name: Install php-fpm
+     yum: name=php-fpm state=present
+
+   - name: Start php-fpm
+     service: name=php-fpm state=started enabled=yes 
+
+   - name: Adds Python MySQL support on RedHat/CentOS
+     yum: name=MySQL-python state=present
+     when: ansible_os_family == 'RedHat'
+
+   - name: Sets the root password
+     mysql_user: user=root password="Sith7Lord" host=localhost
+     no_log: yes
+
+#   - name: Update entry into /root/.my.cnf
+#     lineinfile:  path=/root/.my.cnf regexp='^(.*)password=(.*)$' line='password=Sith7Lord' backrefs=yes
+
+   - name: creatin a file with content
+     copy: 
+        dest: /root/.my.cnf 
+        content: |
+          [client]
+          user=root
+          password=Sith7Lord
+
+   - name: Deletes anonymous MySQL server user for ansible_fqdn
+     mysql_user: user="" host="ansibletarget2" state="absent"
+
+   - name: Deletes anonymous MySQL server user for ansible_fqdn
+     mysql_user: user="root" host="ansibletarget2" state="absent"
+
+
+   - name: Deletes anonymous MySQL server user for ansible_fqdn
+     mysql_user: user="" host="ansibletarget1" state="absent"
+
+   - name: Deletes anonymous MySQL server user for ansible_fqdn
+     mysql_user: user="root" host="ansibletarget1" state="absent"
+
+
+   - name: Secures the MySQL root user for IPV6 localhost (::1)
+     mysql_user: user="root" password="Sith7Lord" host="::1"
+
+   - name: Secures the MySQL root user for IPV4 localhost (127.0.0.1)
+     mysql_user: user="root" password="Sith7Lord" host="127.0.0.1"
+
+   - name: Removes the MySQL test database
+     mysql_db: db=test state=absent

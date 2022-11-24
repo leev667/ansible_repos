@@ -1,0 +1,20 @@
+-
+  name: update root@localhost and create DOTMYDOTCNF
+  hosts: web_servers
+  tasks:
+     - name: Adds Python MySQL support on RedHat/CentOS
+       yum: name=MySQL-python state=present
+       when: ansible_os_family == 'RedHat'
+     
+     - name: Sets the root password 
+       mysql_user: user=root password="Sith8Lord" host=localhost
+       no_log: yes
+
+     - name: 'Update entry into /root/.my.cnf'
+       lineinfile:
+           path: /root/.my.cnf
+           regexp: '^(.*)password=(.*)$' 
+           line: 'password=Sith8Lord'
+           backrefs: yes
+
+
